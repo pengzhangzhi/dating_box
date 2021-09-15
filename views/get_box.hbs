@@ -1,0 +1,32 @@
+{{!-- <div class="container">
+    <header class="d-flex justify-content-center py-3">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="index.html" class="nav-link active" aria-current="page">主页</a></li>
+        <li class="nav-item"><a href="leave_box.html" class="nav-link">留一个</a></li>
+        <li class="nav-item"><a href="get_box.html" class="nav-link">拿一个</a></li>
+        <li class="nav-item"><a href="faq.html" class="nav-link">常见问题</a></li>
+      </ul>
+    </header>
+  </div> --}}
+
+{{> navigation}}
+
+<div id = "main" class="" align="center">
+    <form action="#" method="POST">
+        <b>你想要抽到？：</b>
+
+        <input type="radio" name="gender" value="male" id="male">
+        <label for="male">男生</label>
+        <input type="radio" name="gender" value="female" id="female">
+        <label for="female">女生</label>
+        <input type="radio" name="gender" value="gay" id="gay">
+        <label for="gay">男同性恋</label>
+        <input type="radio" name="gender" value="les" id="les">
+        <label for="les">女同性恋</label>
+
+    </form>
+
+    <div>
+        <button type="submit" class="btn btn-primary" form="">提交</button>
+    </div>
+</div>
