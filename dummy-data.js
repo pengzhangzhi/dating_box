@@ -1,9 +1,9 @@
 exports.humans = [{
-    id: 0,
-    name: "Alice"
+    gender: "female",
+    message: "I am alice."
   }, {
-    id: 1,
-    name: "Bob"
+    gender: "female",
+    message: "I am Bob."
   }]
   
   exports.pets = [{

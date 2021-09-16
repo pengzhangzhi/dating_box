@@ -11,22 +11,22 @@
 
 {{> navigation}}
 
-<div id = "main" class="" align="center">
-    <form action="#" method="POST">
+<section class="text-center p-5">
+<div class="container-lg ">
+    <div class="container">
+      <form action="" method="POST">
         <b>你想要抽到？：</b>
 
-        <input type="radio" name="gender" value="male" id="male">
-        <label for="male">男生</label>
-        <input type="radio" name="gender" value="female" id="female">
-        <label for="female">女生</label>
-        <input type="radio" name="gender" value="gay" id="gay">
-        <label for="gay">男同性恋</label>
-        <input type="radio" name="gender" value="les" id="les">
-        <label for="les">女同性恋</label>
+        {{>gender_select}}
 
+        <div class=" p-5">
+        <input type="submit" class="btn btn-primary btn-lg px-5" value="抽一个">
+      </div>
     </form>
-
-    <div>
-        <button type="submit" class="btn btn-primary" form="">提交</button>
     </div>
+
+    
 </div>
+
+</section>
+
