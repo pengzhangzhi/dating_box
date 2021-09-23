@@ -1,12 +1,12 @@
 {{> navigation}}
 
-<h2>抽中的盲盒</h2>
-{{#if humans.length}}
+
+{{#if boxes}}
   <ul>
-    {{#each humans}}
-      <li>{{gender}}, {{message}}</li>
-    {{/each}}
+    
+      <li>{{boxes.gender}}, {{boxes.message}}</li>
+    
   </ul>
 {{else}}
-  <p>No humans exist.</p>
+  <p>不好意思，没有这个性别的盲盒。 	&#128517</p>
 {{/if}}

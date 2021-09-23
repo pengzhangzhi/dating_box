@@ -1,4 +1,4 @@
-exports.humans = [{
+exports.boxes = [{
     gender: "female",
     message: "I am alice."
   }, {
