@@ -1,0 +1,30 @@
+
+{{> navigation}}
+
+<div id = "main" class="p-5" align="center">
+  <form action="" method="post">
+      <h2>请先回答问题哦！</h3>
+      <h5 class="warning">{{question.question_title}}</h5>
+      <input type="hidden" name="question" value={{question.question_title}}>
+      <input type="hidden" name="id" value={{question.question_id}}>
+    <div class="form-floating p-2">
+      <textarea 
+      class="form-control" placeholder="Leave a comment here" 
+      autofocus="autofocus" required="required" id="answer" 
+      style="height: 50px" value="answer" name="answer"
+      cols="1"></textarea>
+      <label for="mesage_box">答案填在这里</label>
+    </div>
+
+    <div class="container p-5">
+      <div class="container h1 pt-5 ">
+      <input type="submit" class="btn btn-primary btn-lg px-5" value="提交">
+    </div>
+
+   </form>
+
+    </div>
+    
+
+    
+</div>
