@@ -1,12 +1,27 @@
-const dummyData = require('./dummy-data')
+const utilities = require('./utilities')
 const express = require('express')
 const expressHandlebars = require('express-handlebars')
 const path = require('path')
 const app = express()
 const bodyparser = require('body-parser')
 const sqlite3 = require('sqlite3').verbose()
+
+
 const dbPath = "database/boxes.db"
 const db = new sqlite3.Database(dbPath)
+
+
+create_boxes_table_query = "CREATE TABLE IF NOT EXISTS boxes (id INTEGER PRIMARY KEY AUTOINCREMENT,gender TEXT NOT NULL, content TEXT, picked INTEGER DEFAULT 0)"
+db.run(create_boxes_table_query,function(err){
+    if(err){
+        throw err
+    }
+    else{
+        console.log("Intialize TABLE boxes!")
+    }
+})
+
+
 
 
 // register views, base layouts, and partials.
@@ -24,9 +39,7 @@ app.use(bodyparser.urlencoded({extended:false}))
 
 
 app.get('/', function(request, response){
-  const model = {
-    boxes: dummyData.boxes
-  }
+
   response.render("index.hbs",{})
 })
 app.get("/leave_box.html",function(request, response){
@@ -34,13 +47,24 @@ app.get("/leave_box.html",function(request, response){
 })
 
 app.post('/leave_box.html', function(request, response){
+    var status = 1 // success
     
     gender = request.body.gender
     message = request.body.message
-    dummyData.boxes.push({"gender": gender, "message": message})
+
+    insert_query = "INSERT INTO boxes (gender, content) VALUES (?, ?)"
+
+    db.run(insert_query,[gender, message],function(err){
+        if(err){
+            status = 0
+            throw err
+        }
+        else{
+            console.log(insert_query)
+        }
+    })
+
     
-    // return status (success/fail)
-    const status = 1 // success
     response.render("submit_result.hbs",{status: status})
 })
 
@@ -51,26 +75,43 @@ app.get("/get_box.html",function(request, response){
 
 app.post("/get_box.html",function(request, response){
     
-    targer_boxes = []
     const gender = request.body.gender
-    dummyData.boxes.forEach(function(box,index){
-        // console.log(box)
-        if(box.gender==gender){
-            targer_boxes.push(box)
+    const picked = 0
+    retrieve_query = "SELECT * FROM boxes where gender = ? and picked = ?"
+    db.all(retrieve_query,[gender,picked],function(err,retrieved_data){
+        
+        if(err){
+            throw err
+        }
+        else{
+            selected_lucky_box = utilities.randomly_select_box(retrieved_data)
+            
+            
+            if(retrieved_data.length == 0)
+            {
+                
+                response.render("message_prompt.hbs",null)
+            }
+            else
+            {
+                box_content = selected_lucky_box.content
+                
+                box_id = selected_lucky_box.id
+                const model = {"content":box_content}
+                response.render("message_prompt.hbs",model)
+
+                utilities.set_box_to_picked(box_id,db)
+            }
+            
         }
     })
-    const selected_target_idx = Math.floor(Math.random() * targer_boxes.length) 
-    const selected_lucky_box = targer_boxes[selected_target_idx]
-    // console.log(selected_lucky_box)
-    const model = {"boxes":selected_lucky_box}
 
-    
-    // console.log(model)
-    response.render("message_prompt.hbs",model)
+   
 })
 
 app.get("/faq.html",function(request, response){
     response.render("faq.hbs",{})
 })
+
 
 app.listen(8080)
