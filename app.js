@@ -52,11 +52,13 @@ app.engine('hbs', expressHandlebars({
 
 app.use(bodyparser.urlencoded({extended:false}))
 
-
+// index page
 app.get('/', function(request, response){
 
   response.render("index.hbs",{})
 })
+
+// leave box
 app.get("/leave_box.html",function(request, response){
     response.render("leave_box.hbs",{})
 })
@@ -101,6 +103,7 @@ app.post('/leave_box.html', function(request, response){
 
     
 })
+// question page.
 app.get("/question.html",function(request, response){
     // select question id and render the question
     
@@ -134,7 +137,7 @@ app.post("/question.html",function(request, response){
     
 })
 
-
+// get box
 app.get("/get_box.html",function(request, response){
     
     response.render("get_box.hbs",{})
@@ -201,5 +204,21 @@ app.get("/faq.html",function(request, response){
     response.render("faq.hbs",{})
 })
 
-
+app.get("/admin.html",function(request, response){
+    retrieve_query = "SELECT * FROM boxes"
+        db.all(retrieve_query,function(err,retrieved_data){
+            
+        if(err){
+            throw err
+        }
+        else{
+            
+            console.log(retrieved_data)
+            response.render("admin.hbs",{retrieved_data})
+            
+                
+        }
+    })
+    
+})
 app.listen(8080)

@@ -1,0 +1,11 @@
+{{> navigation}}
+<h2>boxes</h2>
+{{#if retrieved_data.length}}
+  <ul>
+    {{#each retrieved_data}}
+      <li>{{content}}</li>
+    {{/each}}
+  </ul>
+{{else}}
+  <p>No humans exist.</p>
+{{/if}}
