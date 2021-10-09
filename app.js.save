@@ -25,9 +25,6 @@ db.run(create_boxes_table_query,function(err){
     }
 })
 
-// db.run( "UPDATE boxes SET picked = 0 WHERE picked = 1",function(err){})
-
-
 // session
 // creating 24 hours from milliseconds
 const oneDay = 1000 * 60 * 60 * 24 * 7;
@@ -74,16 +71,15 @@ app.post('/leave_box.html', function(request, response){
         gender = request.body.gender
         message = request.body.message
 
-	picked = 0
-        insert_query = "INSERT INTO boxes (gender, content,picked) VALUES (?, ?,?)"
+        insert_query = "INSERT INTO boxes (gender, content) VALUES (?, ?)"
 
-        db.run(insert_query,[gender, message,picked],function(err){
+        db.run(insert_query,[gender, message],function(err){
             if(err){
                 status = 0
                 throw err
             }
             else{
-                console.log(insert_query+gender+" "+message+" "+picked)
+                console.log(insert_query)
             }
         })
 
@@ -141,6 +137,12 @@ app.post("/question.html",function(request, response){
     
 })
 
+app.get("/ToUser.html",function(request,response){
+
+	console.log("!")
+	response.render("ToUser.hbs")
+})
+
 // get box
 app.get("/get_box.html",function(request, response){
     
@@ -162,9 +164,10 @@ app.post("/get_box.html",function(request, response){
     if(session.get_valid && session.get_valid < 2)
     {
         const gender = request.body.gender
-        const picked = 3
-        retrieve_query = "SELECT * FROM boxes where gender = ? and picked <= ?"
+        const picked = 0
+        retrieve_query = "SELECT * FROM boxes where gender = ? and picked = ?"
         db.all(retrieve_query,[gender,picked],function(err,retrieved_data){
+            
         if(err){
             throw err
         }
@@ -201,11 +204,6 @@ app.post("/get_box.html",function(request, response){
     }
 
    
-})
-
-app.get("/ToUser.html",function(request,response){
-response.render("ToUser.hbs")
-
 })
 
 app.get("/faq.html",function(request, response){

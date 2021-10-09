@@ -1,10 +1,10 @@
 function set_box_to_picked(id,db){
 
-    picked = 1
+  //  picked = 1
     
-    update_query = "UPDATE boxes SET picked = ? WHERE id = ?"
+    update_query = "UPDATE boxes SET picked = picked +1  WHERE id = ?"
 
-    db.run(update_query,[picked,id],function(err){
+    db.run(update_query,[id],function(err){
         if(err){
             throw err
         }
