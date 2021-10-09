@@ -165,7 +165,6 @@ app.post("/get_box.html",function(request, response){
         const picked = 3
         retrieve_query = "SELECT * FROM boxes where gender = ? and picked <= ?"
         db.all(retrieve_query,[gender,picked],function(err,retrieved_data){
-        console.log("!!")    
         if(err){
             throw err
         }
