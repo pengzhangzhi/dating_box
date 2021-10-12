@@ -1,0 +1,27 @@
+{{> navigation}}
+<div id = "main" class="p-5" align="center">
+  <form action="" method="post">
+    <div class="form-floating p-2">
+        
+      <input 
+      type="password"
+      class="form-control" placeholder="Leave a comment here" 
+      autofocus="autofocus" required="required" id="mesage_box" 
+      style="height: 100px" value="" name="password"
+      cols="1"></textarea>
+      <label for="mesage_box"></label>
+    </div>
+
+    <div class="container p-5">
+        <p>{{message}}</p>
+      <div class="container h1 pt-5 ">
+      <input type="submit" class="btn btn-primary btn-lg px-5" value="提交">
+      </div>
+
+      </form>
+
+    </div>
+    
+
+    
+</div>

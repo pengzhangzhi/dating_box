@@ -213,20 +213,48 @@ app.get("/faq.html",function(request, response){
 })
 
 app.get("/admin.html",function(request, response){
-    retrieve_query = "SELECT * FROM boxes"
-        db.all(retrieve_query,function(err,retrieved_data){
+    if(request.session.admin)
+    {
+        retrieve_query = "SELECT * FROM boxes"
+    db.all(retrieve_query,function(err,retrieved_data){
+        
+    if(err){
+        throw err
+    }
+    else{
+        
+        console.log(retrieved_data)
+        response.render("admin.hbs",{retrieved_data})
+        
             
-        if(err){
-            throw err
-        }
-        else{
-            
-            console.log(retrieved_data)
-            response.render("admin.hbs",{retrieved_data})
-            
-                
-        }
+    }
     })
+    }
     
+    else{
+        response.redirect("/login.html")
+    }
+})
+
+// login
+
+app.get("/login.html",function(request, response){
+    response.render("login.hbs")
+})
+app.post("/login.html",function(request, response){
+    // verify password
+    // if valid:
+    //     set session
+    // else:
+    password = "admin123"
+    if(request.body.password == password){
+        request.session.admin = true
+        response.redirect("/admin.html")
+    }
+    else{
+        response.render("login.hbs",{message:"wrong password!"})
+    }
+
+
 })
 app.listen(8080)
