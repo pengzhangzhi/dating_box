@@ -9,7 +9,7 @@ const cookieParser = require("cookie-parser");
 const sessions = require('express-session');
 
 // question data
-const question = {question_id:1,question_title:"孔目湖在哪个校区？",answer:"南区"}
+const question = {question_id:1,question_title:"孔目湖在哪个校区？(南区）",answer:"南区"}
 
 // database initialization
 const dbPath = "database/boxes.db"
@@ -212,23 +212,14 @@ app.get("/faq.html",function(request, response){
     response.render("faq.hbs",{})
 })
 
+
 app.get("/admin.html",function(request, response){
+
     if(request.session.admin)
     {
-        retrieve_query = "SELECT * FROM boxes"
-    db.all(retrieve_query,function(err,retrieved_data){
-        
-    if(err){
-        throw err
-    }
-    else{
-        
-        console.log(retrieved_data)
-        response.render("admin.hbs",{retrieved_data})
-        
-            
-    }
-    })
+
+        response.render("admin.hbs")
+ 
     }
     
     else{
@@ -256,5 +247,86 @@ app.post("/login.html",function(request, response){
     }
 
 
+})
+
+
+// apis for box management (CRUD)
+
+app.get("/boxes",function(request, response){
+    if(request.session.admin)
+    {
+        retrieve_query = "SELECT * FROM boxes"
+    db.all(retrieve_query,function(err,retrieved_data){
+        
+    if(err){
+        throw err
+    }
+    else{
+        
+        console.log(retrieved_data)
+        response.json({code:0,
+                    msg:"success",
+                    count:retrieved_data.length,
+                    data:retrieved_data
+                    })
+        
+        
+            
+    }
+    })
+    }
+})
+
+app.get("/delete_box",function(request, response){
+    id = request.query.id
+    query = "DELETE FROM boxes WHERE id = ?"
+    console.log(id)
+    db.run(query,[id],function(err){
+        if(err){
+            response.json({code:1,
+                msg:"fail",
+                })
+        }
+        else{
+            response.json({code:0,
+                msg:"success",
+                })
+        }
+    })
+})
+
+app.get("/update_box",function(request, response){
+    id = request.query.id
+    gender = request.query.gender
+    content = request.query.content
+    picked = request.query.picked
+    db.run( "UPDATE boxes SET gender = ?, content = ?, picked = ?, WHERE id = ?",[gender,content,picked,id],function(err){
+        if(err){
+            response.json({code:1,msg:"fail"})
+        }
+        else{
+            response.json({code:0,msg:"success"})
+        }
+    })
+})
+app.get("/retrieve_content",function(request, response){
+    content = request.query.content
+    query = "SELECT * FROM boxes where content like '%?%'"
+    console.log(content)
+    db.all(query,[content],function(err,retrieved_data){
+        if(err){
+            response.json({code:1,msg:"fail"})
+        }
+        else{
+
+            response.json({code:0,
+                    msg:"success",
+                    count:retrieved_data.length,
+                    data:retrieved_data
+                    })
+            console.log("!!")
+        
+        }
+    })
 })
 app.listen(8080)
